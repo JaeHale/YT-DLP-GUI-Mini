@@ -19,5 +19,12 @@
 </p>
 
 <p align="left">
-  So why make something new if there are already similar projects out there? Well I wanted to make something for people like myself, people that need videos in perhaps weird file formats or just need a program that works with no learning curve. That is the goal of YT-DLP GM, and the reason I wrote it. Updates will come out when I think to add or get suggestions to add something, so feel free to suggest in the discussion section. Happy downloading!
+  So why make something new if there are already similar projects out there? Well I wanted to make something for people like myself, people that need videos in perhaps weird file formats or just need a program that works with no learning curve. That is the goal of YT-DLP GM, and the reason I wrote it. Updates will come out when I think to add or get suggestions to add something. Happy downloading!
+</p>
+
+### Links
+<p align="left">
+YT-DLP: https://github.com/yt-dlp/yt-dlp
+YT-DLP GUI 1: https://github.com/kannagi0303/yt-dlp-gui
+YT-DLP GUI 2: https://github.com/dsymbol/yt-dlp-gui
 </p>
