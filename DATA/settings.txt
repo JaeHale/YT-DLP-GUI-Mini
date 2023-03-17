@@ -1,0 +1,3 @@
+DefaultType=mp4
+DefaultLocation=%downloads%
+DefaultName=downloadedcontent
