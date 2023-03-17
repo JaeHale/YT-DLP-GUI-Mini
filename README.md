@@ -24,7 +24,7 @@
 
 ### Links
 <p align="left">
-YT-DLP: https://github.com/yt-dlp/yt-dlp
-YT-DLP GUI 1: https://github.com/kannagi0303/yt-dlp-gui
-YT-DLP GUI 2: https://github.com/dsymbol/yt-dlp-gui
+YT-DLP: https://github.com/yt-dlp/yt-dlp <br>
+YT-DLP GUI 1: https://github.com/kannagi0303/yt-dlp-gui <br>
+YT-DLP GUI 2: https://github.com/dsymbol/yt-dlp-gui <br>
 </p>
