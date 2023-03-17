@@ -8,6 +8,10 @@
   YT-DLPGM is a small upgrade to YT-DLP to make it slightly more friendly to new users.
 </p></b>
 
+<p align="center"><b>
+  ***If you want the ability to download with more file types, watch the video linked under links on how to extract FFMPEG and then paste the .exes into the DATA folder.***
+</p></b>
+
 ### Background
 
 <p align="left">
@@ -24,6 +28,7 @@
 
 ### Links
 <p align="left">
+FFMPEG Download Tutorial: youtu.be/lcaxosNzEp8?t=56 <br>
 YT-DLP: https://github.com/yt-dlp/yt-dlp <br>
 YT-DLP GUI 1: https://github.com/kannagi0303/yt-dlp-gui <br>
 YT-DLP GUI 2: https://github.com/dsymbol/yt-dlp-gui <br>
