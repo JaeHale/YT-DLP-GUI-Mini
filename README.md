@@ -28,7 +28,7 @@
 
 ### Links
 <p align="left">
-FFMPEG Download Tutorial: youtu.be/lcaxosNzEp8?t=56 <br>
+FFMPEG Download Tutorial: https://youtu.be/lcaxosNzEp8?t=56 <br>
 YT-DLP: https://github.com/yt-dlp/yt-dlp <br>
 YT-DLP GUI 1: https://github.com/kannagi0303/yt-dlp-gui <br>
 YT-DLP GUI 2: https://github.com/dsymbol/yt-dlp-gui <br>
