@@ -9,7 +9,7 @@
 </p></b>
 
 <p align="center"><b>
-  ***If you want the ability to download with more file types, watch the video linked under links on how to extract FFMPEG and then paste the .exes into the DATA folder.***
+  ***If you want the ability to download with more file types, watch the video linked on how to extract FFMPEG and then paste the .exes into the DATA folder.***
 </p></b>
 
 ### Background
