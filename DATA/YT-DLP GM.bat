@@ -51,8 +51,9 @@
   cls
   type "settings.dat"
   echo:
-  choice /c 1234 /n /m "Choose an option to continue:"
-  if %ERRORLEVEL%==4 goto Save
+  choice /c 12345 /n /m "Choose an option to continue:"
+  if %ERRORLEVEL%==5 goto Save
+  if %ERRORLEVEL%==4 goto RestoreDef
   if %ERRORLEVEL%==3 goto DefName
   if %ERRORLEVEL%==2 goto DefLocation
   if %ERRORLEVEL%==1 goto DefType
@@ -86,6 +87,15 @@
   if %ERRORLEVEL%==2 set DefaultName=%TempName% & goto DefName
   if %ERRORLEVEL%==1 goto Settings
 
+:RestoreDef
+  cls
+  choice /c YN /n /m "Are you sure you would like to restore defaults to their original state? (Y or N)"
+  if %ERRORLEVEL%==2 goto Settings
+  if %ERRORLEVEL%==1 echo DefaultType=mp4 > "defaults.dat"
+  echo DefaultLocation=%%downloads%% >> "defaults.dat"
+  echo DefaultName=downloadedcontent >> "defaults.dat"
+  goto Settings
+
 :Save
   cls
   type "save.dat"
@@ -100,18 +110,18 @@
   cls
   choice /c YN /n /m "Are you sure you would like to save? (Y or N)"
   if %ERRORLEVEL%==2 goto Save
-  if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
-  echo DefaultLocation=%DefaultLocation% >> "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
-  echo DefaultName=%DefaultName% >> "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
+  if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "defaults.dat"
+  echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
+  echo DefaultName=%DefaultName% >> "defaults.dat"
   goto Start
 
 :SaveSet
   cls
   choice /c YN /n /m "Are you sure you would like to save? (Y or N)"
   if %ERRORLEVEL%==2 goto Save
-  if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
-  echo DefaultLocation=%DefaultLocation% >> "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
-  echo DefaultName=%DefaultName% >> "D:\jamie\Downloads\ytdlpgm\DATA\defaults.dat"
+  if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "defaults.dat"
+  echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
+  echo DefaultName=%DefaultName% >> "defaults.dat"
   goto Settings
 
 :ExitMain
