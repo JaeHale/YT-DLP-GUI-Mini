@@ -76,6 +76,7 @@
 
 :DefType
   cls
+  set RestoredDefault=0
   set TempType=%DefaultType%
   echo Current Default Type: %DefaultType%
   set /p DefaultType=What would you like to change the Default Type to? (Do not put a . before the file type): 
@@ -85,6 +86,7 @@
 
 :DefLocation
   cls
+  set RestoredDefault=0
   set TempLocation=%DefaultLocation%
   if %DefaultLocation%==%%downloads%% set "DefaultLocation=Downloads"
   echo Current Default Location: %DefaultLocation%
@@ -96,6 +98,7 @@
 
 :DefName
   cls
+  set RestoredDefault=0
   set TempName=%DefaultName%
   echo Current Default Name: %DefaultName%
   set /p DefaultName=What would you like to change the Default Name to?: 
@@ -107,15 +110,20 @@
   cls
   choice /c YN /n /m "Are you sure you would like to restore defaults to their original state? (Y or N)"
   if %ERRORLEVEL%==2 goto Settings
-  if %ERRORLEVEL%==1 echo DefaultType=mp4 > "defaults.dat"
-  echo DefaultLocation=%%downloads%% >> "defaults.dat"
-  echo DefaultName=downloadedcontent >> "defaults.dat"
+  if %ERRORLEVEL%==1 set DefaultType=mp4
+  set DefaultLocation=%%downloads%%
+  set DefaultName=downloadedcontent
+  echo DefaultType=%DefaultType% > "defaults.dat"
+  echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
+  echo DefaultName=%DefaultName% >> "defaults.dat"
+  set RestoredDefault=1
   goto Settings
 
 :Save
   set SaveType=0
   set ExitType=0
   cls
+  if %RestoredDefault%==1 goto Start
   type "save.dat"
   echo:
   choice /c 1234 /n /m "Choose an option to continue:"
