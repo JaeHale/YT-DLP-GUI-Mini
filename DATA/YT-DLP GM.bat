@@ -22,6 +22,7 @@
 :Start
   call 
   cls
+  set RestoredDefault=1
   type "main.dat"
   echo:
   choice /c 12345 /n /t 30 /d 5 /m "Choose an option to continue:"
