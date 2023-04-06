@@ -1,8 +1,23 @@
 @echo off
   for /f "usebackq tokens=2,*" %%a in (`REG QUERY "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v {374DE290-123F-4565-9164-39C4925E467B}`) do set downloads=%%b
   for /f "tokens=2 delims==" %%c in ('findstr "DefaultType=" defaults.dat') do set "DefaultType=%%c"
+  set TempTrim=%DefaultType%
+  set StepNum=1
+  call :Trim %TempTrim%
+:Step1
+  set DefaultType=%TempTrim%
   for /f "tokens=2 delims==" %%d in ('findstr "DefaultLocation=" defaults.dat') do set "DefaultLocation=%%d"
+  set TempTrim=%DefaultLocation%
+  set StepNum=2
+  call :Trim %TempTrim%
+:Step2
+  set DefaultLocation=%TempTrim%
   for /f "tokens=2 delims==" %%e in ('findstr "DefaultName=" defaults.dat') do set "DefaultName=%%e"
+  set TempTrim=%DefaultName%
+  set StepNum=3
+  call :Trim %TempTrim%
+:Step3
+  set DefaultName=%TempTrim%
 
 :Start
   call 
@@ -29,8 +44,9 @@
   set /p FileLocate=Set a destination for downloaded file or push ENTER for default location [Default location: %DefaultLocation%] 
   if %DefaultLocation%==Downloads set "DefaultLocation=%%downloads%%"
   if [%FileLocate%]==[] set FileLocate=%DefaultLocation%
-  set /p FileName=Set a name for the file or push ENTER for default [Default name: %DefaultName%.%FileType%] 
-  if [%FileName%]==[] (.\yt-dlp -o "%DefaultName%.%%(ext)s" -P "%FileLocate%" -f %FileType% %YtLink%) else (.\yt-dlp -o "%FileName%.%%(ext)s" -P "%FileLocate%" -f %FileType% %YtLink%)
+  set /p FileName="Set a name for the file or push ENTER for default [Default name: %DefaultName%.%DefaultType%] "
+  if ["%FileName%"]==[] set FileName=%DefaultName%
+  .\yt-dlp -o "%FileName%".%%(ext)s -P "%FileLocate%" -f %FileType% %YtLink%
   choice /c YN /n /m "Download another video? (Y or N)"
   if %ERRORLEVEL%==2 goto Start
   if %ERRORLEVEL%==1 goto Download
@@ -41,7 +57,7 @@
   type "search.dat"
   echo:
   set /p SearchTerm=Choose a term to search for on Youtube.com: 
-  .\yt-dlp ytsearch5:%SearchTerm% --get-id --get-title
+  .\yt-dlp ytsearch5:"%SearchTerm%" --get-id --get-title
   choice /c YN /n /m "Search for another term? (Y or N)"
   if %ERRORLEVEL%==2 goto Start
   if %ERRORLEVEL%==1 goto Search
@@ -97,50 +113,36 @@
   goto Settings
 
 :Save
+  set SaveType=0
+  set ExitType=0
   cls
   type "save.dat"
   echo:
   choice /c 1234 /n /m "Choose an option to continue:"
-  if %ERRORLEVEL%==4 goto ExitSet
-  if %ERRORLEVEL%==3 goto ExitMain
-  if %ERRORLEVEL%==2 goto SaveSet
-  if %ERRORLEVEL%==1 goto SaveMain
+  if %ERRORLEVEL%==4 set ExitType=1 && goto ExitSetMain
+  if %ERRORLEVEL%==3 goto ExitSetMain
+  if %ERRORLEVEL%==2 set SaveType=1 && goto SaveSetMain
+  if %ERRORLEVEL%==1 goto SaveSetMain
 
-:SaveMain
+:SaveSetMain
   cls
   choice /c YN /n /m "Are you sure you would like to save? (Y or N)"
   if %ERRORLEVEL%==2 goto Save
   if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "defaults.dat"
   echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
   echo DefaultName=%DefaultName% >> "defaults.dat"
+  if %SaveType%==1 goto Settings
   goto Start
 
-:SaveSet
-  cls
-  choice /c YN /n /m "Are you sure you would like to save? (Y or N)"
-  if %ERRORLEVEL%==2 goto Save
-  if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "defaults.dat"
-  echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
-  echo DefaultName=%DefaultName% >> "defaults.dat"
-  goto Settings
-
-:ExitMain
+:ExitSetMain
   cls
   choice /c YN /n /m "Are you sure you would like to exit? (Y or N)"
   if %ERRORLEVEL%==2 goto Save
   if %ERRORLEVEL%==1 set DefaultType=%TempType%
   set DefaultLocation=%TempLocation%
   set DefaultName=%TempName%
+  if %ExitType%==1 goto Settings
   goto Start
-
-:ExitSet
-  cls
-  choice /c YN /n /m "Are you sure you would like to exit? (Y or N)"
-  if %ERRORLEVEL%==2 goto Save
-  if %ERRORLEVEL%==1 set DefaultType=%TempType%
-  set DefaultLocation=%TempLocation%
-  set DefaultName=%TempName%
-  goto Settings
 
 :Update
   call 
@@ -148,3 +150,7 @@
   .\yt-dlp -U
   pause
   goto Start
+
+:Trim
+  set TempTrim=%*
+  goto Step%StepNum%
