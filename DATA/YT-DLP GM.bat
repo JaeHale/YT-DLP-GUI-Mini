@@ -22,7 +22,7 @@
 :Start
   call 
   cls
-  set RestoredDefault=1
+  set DefaultsChanged=0
   type "main.dat"
   echo:
   choice /c 12345 /n /t 30 /d 5 /m "Choose an option to continue:"
@@ -45,8 +45,8 @@
   set /p FileLocate=Set a destination for downloaded file or push ENTER for default location [Default location: %DefaultLocation%] 
   if %DefaultLocation%==Downloads set "DefaultLocation=%%downloads%%"
   if [%FileLocate%]==[] set FileLocate=%DefaultLocation%
-  set /p FileName="Set a name for the file or push ENTER for default [Default name: %DefaultName%.%DefaultType%] "
-  if ["%FileName%"]==[] set FileName=%DefaultName%
+  set /p FileName="Set a name for the file or push ENTER for default [Default name: %DefaultName%.%FileType%] "
+  if [%FileName%]==[] set FileName=%DefaultName%
   .\yt-dlp -o "%FileName%".%%(ext)s -P "%FileLocate%" -f %FileType% %YtLink%
   choice /c YN /n /m "Download another video? (Y or N)"
   if %ERRORLEVEL%==2 goto Start
@@ -77,7 +77,7 @@
 
 :DefType
   cls
-  set RestoredDefault=0
+  set DefaultsChanged=1
   set TempType=%DefaultType%
   echo Current Default Type: %DefaultType%
   set /p DefaultType=What would you like to change the Default Type to? (Do not put a . before the file type): 
@@ -87,7 +87,7 @@
 
 :DefLocation
   cls
-  set RestoredDefault=0
+  set DefaultsChanged=1
   set TempLocation=%DefaultLocation%
   if %DefaultLocation%==%%downloads%% set "DefaultLocation=Downloads"
   echo Current Default Location: %DefaultLocation%
@@ -99,7 +99,7 @@
 
 :DefName
   cls
-  set RestoredDefault=0
+  set DefaultsChanged=1
   set TempName=%DefaultName%
   echo Current Default Name: %DefaultName%
   set /p DefaultName=What would you like to change the Default Name to?: 
@@ -117,14 +117,14 @@
   echo DefaultType=%DefaultType% > "defaults.dat"
   echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
   echo DefaultName=%DefaultName% >> "defaults.dat"
-  set RestoredDefault=1
+  set DefaultsChanged=0
   goto Settings
 
 :Save
   set SaveType=0
   set ExitType=0
   cls
-  if %RestoredDefault%==1 goto Start
+  if %DefaultsChanged%==0 goto Start
   type "save.dat"
   echo:
   choice /c 1234 /n /m "Choose an option to continue:"
