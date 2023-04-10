@@ -54,7 +54,7 @@
   set /p FileLocate=Set a destination for downloaded file or push ENTER for default location [Default location: %DefaultLocation%] 
   if [%FileLocate%]==[] set FileLocate=%DefaultLocation%
   set /p FileName="Set a name for the file or push ENTER for default [Default name: %DefaultName%.%FileType%] "
-  if [%FileName%]==[] set FileName=%DefaultName%
+  if ["%FileName%"]==[] set FileName=%DefaultName%
   .\yt-dlp -o "%FileName%".%%(ext)s -P "%FileLocate%" -f %FileType% %YtLink%
   choice /c YN /n /m "Download another video? (Y or N)"
   if %ERRORLEVEL%==2 goto Start
