@@ -1,5 +1,15 @@
 @echo off
   for /f "usebackq tokens=2,*" %%a in (`REG QUERY "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v {374DE290-123F-4565-9164-39C4925E467B}`) do set downloads=%%b
+  >nul findstr /c:"RunBefore=1" defaults.dat
+  if %ERRORLEVEL%==0 goto RunBefore
+  set DefaultType=mp4
+  set DefaultLocation=%downloads%
+  set DefaultName=downloadedcontent
+  echo DefaultType=%DefaultType% > "defaults.dat"
+  echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
+  echo DefaultName=%DefaultName% >> "defaults.dat"
+  echo RunBefore=1 >> "defaults.dat"
+:RunBefore  
   for /f "tokens=2 delims==" %%c in ('findstr "DefaultType=" defaults.dat') do set "DefaultType=%%c"
   set TempTrim=%DefaultType%
   set StepNum=1
@@ -41,9 +51,7 @@
   set /p YtLink=Paste link or ID from video sharing site: 
   set /p FileType=Choose a file type (mp3, m4a, mp4, webm, etc.) or push ENTER for default [Default type: %DefaultType%] 
   if [%FileType%]==[] set FileType=%DefaultType%
-  if %DefaultLocation%==%%downloads%% set "DefaultLocation=Downloads"
   set /p FileLocate=Set a destination for downloaded file or push ENTER for default location [Default location: %DefaultLocation%] 
-  if %DefaultLocation%==Downloads set "DefaultLocation=%%downloads%%"
   if [%FileLocate%]==[] set FileLocate=%DefaultLocation%
   set /p FileName="Set a name for the file or push ENTER for default [Default name: %DefaultName%.%FileType%] "
   if [%FileName%]==[] set FileName=%DefaultName%
@@ -89,11 +97,9 @@
   cls
   set DefaultsChanged=1
   set TempLocation=%DefaultLocation%
-  if %DefaultLocation%==%%downloads%% set "DefaultLocation=Downloads"
   echo Current Default Location: %DefaultLocation%
   set /p DefaultLocation=What would you like to change the Default Location to? (Must be in C:\example\folder format): 
   choice /c YN /n /m "Is this correct: %DefaultLocation%? (Y or N)"
-  if %DefaultLocation%==Downloads set "DefaultLocation=%%downloads%%"
   if %ERRORLEVEL%==2 set DefaultLocation=%TempLocation% & goto DefLocation
   if %ERRORLEVEL%==1 goto Settings
 
@@ -112,11 +118,12 @@
   choice /c YN /n /m "Are you sure you would like to restore defaults to their original state? (Y or N)"
   if %ERRORLEVEL%==2 goto Settings
   if %ERRORLEVEL%==1 set DefaultType=mp4
-  set DefaultLocation=%%downloads%%
+  set DefaultLocation=%downloads%
   set DefaultName=downloadedcontent
   echo DefaultType=%DefaultType% > "defaults.dat"
   echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
   echo DefaultName=%DefaultName% >> "defaults.dat"
+  echo RunBefore=1 >> "defaults.dat"
   set DefaultsChanged=0
   goto Settings
 
@@ -140,6 +147,7 @@
   if %ERRORLEVEL%==1 echo DefaultType=%DefaultType% > "defaults.dat"
   echo DefaultLocation=%DefaultLocation% >> "defaults.dat"
   echo DefaultName=%DefaultName% >> "defaults.dat"
+  echo RunBefore=1 >> "defaults.dat"
   if %SaveType%==1 goto Settings
   goto Start
 
